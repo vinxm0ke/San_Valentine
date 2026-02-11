@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>San Valentín 💖</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- importante -->
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .screen { display: none; }
+    .active { display: block; }
+
+    .card, .box {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 90vw;         /* se ajusta al ancho del móvil */
+      max-width: 400px;
+      position: relative;
+    }
+
+    .box { height: 260px; }
+
+    button {
+      padding: 14px 25px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .buttons button { width: 70%; max-width: 180px; }
+
+    .yes-btn {
+      background: #2ecc71;
+      color: white;
+      position: relative;
+      z-index: 4;
+    }
+
+    .no-btn {
+      background: #e74c3c;
+      color: white;
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+    }
+
+    .intro-img {
+      width: 100px;
+      max-width: 70%;
+      margin: 15px auto;
+      display: block;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      color: #ff4f8b;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90vw;
+      max-width: 320px;
+      animation: pop 0.4s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 15px;
+      margin: 15px 0;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="screen1" class="screen active card">
+    <h1>❤️ Querés ser mi San Valentín? ❤️</h1>
+    <p>Sos la persona que hace mis días más bonitos 💕</p>
+
+    <img class="intro-img" src="corazonjiju.jpg" alt="cute">
+
+    <button onclick="goToScreen2()">puchame</button>
+  </div>
+
+  <div id="screen2" class="screen box">
+    <h2>Entonces… 🥺👉👈</h2>
+
+    <div class="buttons">
+      <button id="yesBtn" class="yes-btn" onclick="yes()">chi uwu</button>
+      <button id="noBtn" class="no-btn" onclick="nope()">no fokiu</button>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2>😭💖 SABÍA QUE SÍ 💍</h2>
+      <img src="otrocrosan.jpg" alt="amor">
+      <button onclick="closeModal()">cerrar 💘</button>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const box = document.querySelector('.box');
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const modal = document.getElementById('modal');
+
+    let yesScale = 1;
+    let noScale = 1;
+    let noClicks = 0;
+
+    function goToScreen2() {
+      screen1.classList.remove('active');
+      screen2.classList.add('active');
+
+      noBtn.style.left = '50%';
+      noBtn.style.top = '55px';
+      noBtn.style.transform = 'translateX(-50%)';
+    }
+
+    function yes() {
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    function nope() {
+      noClicks++;
+      if (noClicks >= 5) {
+        noBtn.style.display = 'none';
+        return;
+      }
+
+      yesScale += 0.3;
+      yesBtn.style.transform = `scale(${yesScale})`;
+
+      noScale = Math.max(0.3, noScale - 0.15);
+      noBtn.style.transform = `scale(${noScale})`;
+
+      const maxX = box.clientWidth - noBtn.offsetWidth;
+      const maxY = box.clientHeight - noBtn.offsetHeight;
+
+      noBtn.style.left = Math.random() * maxX + 'px';
+      noBtn.style.top = Math.random() * maxY + 'px';
+    }
+  </script>
+
+</body>
+</html>
